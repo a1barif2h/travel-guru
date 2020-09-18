@@ -1,0 +1,9 @@
+.place-style {
+  border: 3px solid lightgray;
+  transition: transform 0.2s;
+}
+
+.place-style:hover {
+  border: 2px solid cyan;
+  transform: scale(1.05);
+}

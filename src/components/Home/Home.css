@@ -1,0 +1,7 @@
+.home {
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+    url(../../images/Rectangle\ 1.png);
+  background-position: center center;
+  background-size: 100% 100%;
+}
