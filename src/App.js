@@ -6,6 +6,9 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import { firebaseConfig } from "./firbase.config";
 import Booking from "./components/Booking/Booking";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import StartBooking from "./components/StartBooking/StartBooking";
+import Login from "./components/Login/Login";
 
 export const LocalContext = createContext();
 
@@ -41,8 +44,14 @@ function App() {
           <Route path="/home">
             <Home />
           </Route>
-          <Route path="/booking">
+          <Route exact path="/booking">
             <Booking />
+          </Route>
+          <PrivateRoute exact path="/booking/start-booking">
+            <StartBooking />
+          </PrivateRoute>
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="*">
             <NoMatch />

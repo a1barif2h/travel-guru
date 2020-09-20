@@ -15,7 +15,7 @@ const Home = () => {
   };
   return (
     <div style={homeStyle}>
-      <Header />
+      <Header color="white" />
       <TravelPlaces />
     </div>
   );

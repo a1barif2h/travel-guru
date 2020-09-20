@@ -10,8 +10,8 @@ import "./Booking.css";
 const Booking = () => {
   const history = useHistory();
   const [showPlace] = useContext(LocalContext);
-  const [from, setFrom] = useState();
-  const [to, setTo] = useState();
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
 
   const formControl = (e) => {
     e.preventDefault();
@@ -142,10 +142,10 @@ const Booking = () => {
                 </Col>
               </Row>
               <input
+                className="bg-warning"
                 style={{
                   width: "100%",
                   marginTop: "10px",
-                  backgroundColor: "orange",
                   padding: "10px",
                   fontWeight: "600",
                   border: "0",

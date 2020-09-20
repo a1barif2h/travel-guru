@@ -13,7 +13,8 @@ import {
 import logo from "../../images/Logo.png";
 import "./Header.css";
 
-const Header = () => {
+const Header = (props) => {
+  const linkColor = props.color;
   return (
     <Container fluid>
       <Row>
@@ -24,7 +25,7 @@ const Header = () => {
             expand="lg"
           >
             <Navbar.Brand className="logo mr-md-5 ml-md-5" href="/home">
-              <img src={logo} alt="" />
+              <img style={{ width: "120px" }} src={props.img || logo} alt="" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -32,24 +33,40 @@ const Header = () => {
                 <FormControl
                   style={{
                     background: "transparent",
-                    color: "white",
+                    color: `${linkColor}`,
                   }}
                   type="text"
                   placeholder="Search your Destination..."
                   className="mr-sm-2 mr-sm-5"
                 />
               </Form>
-              <Nav className="ml-5 ">
-                <Nav.Link className="text-white mr-5" href="/news">
+              <Nav style={{ fontWeight: "bold" }} className="ml-5 ">
+                <Nav.Link
+                  style={{ color: `${linkColor}` }}
+                  className=" mr-5"
+                  href="/news"
+                >
                   News
                 </Nav.Link>
-                <Nav.Link className="text-white mr-5" href="/destination">
+                <Nav.Link
+                  style={{ color: `${linkColor}` }}
+                  className=" mr-5"
+                  href="/destination"
+                >
                   Destination
                 </Nav.Link>
-                <Nav.Link className="text-white mr-5" href="/blog">
+                <Nav.Link
+                  style={{ color: `${linkColor}`, fontWeight: "bold" }}
+                  className=" mr-5"
+                  href="/blog"
+                >
                   Blog
                 </Nav.Link>
-                <Nav.Link className="text-white mr-5" href="/contact">
+                <Nav.Link
+                  style={{ color: `${linkColor}` }}
+                  className=" mr-5"
+                  href="/contact"
+                >
                   Contact
                 </Nav.Link>
               </Nav>
