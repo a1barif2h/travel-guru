@@ -3,12 +3,13 @@ import { Col, Container, Row } from "react-bootstrap";
 import { hotelsInfo } from "../../fakeData/fakeData";
 import Header from "../Header/Header";
 import HotelDetail from "../HotelDetail/HotelDetail";
+import blackLogo from "../../images/BlackLogo.png";
 import Map from "../Map/Map";
 
 const StartBooking = () => {
   return (
     <div>
-      <Header />
+      <Header color="black" img={blackLogo} />
       <Container>
         <Row>
           <Col md={6}>

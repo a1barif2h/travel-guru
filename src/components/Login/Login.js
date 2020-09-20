@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import blackLogo from "../../images/BlackLogo.png";
-import "./Login.css";
 import { Button, Form } from "react-bootstrap";
 import { LocalContext } from "../../App";
 import * as firebase from "firebase/app";
+import "firebase/auth";
 import fbIcon from "../../images/fb.png";
 import googleIcon from "../../images/google.png";
+import { firebaseConfig } from "../../firbase.config";
 
 const Login = () => {
   const [
@@ -15,13 +16,35 @@ const Login = () => {
     setShowPlace,
     loggedInUser,
     setLoggedInUser,
-    name,
-    setName,
+    userDetails,
+    setUserDetails,
   ] = useContext(LocalContext);
-
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
+  const [user, setUser] = useState({});
+
+  const handelGoogleSignIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((res) => {
+        const { displayName, email, photoUrl } = res.user;
+        const signedInUser = {
+          isSignedIn: true,
+          name: displayName,
+          email: email,
+          photo: photoUrl,
+        };
+        setUserDetails(signedInUser);
+        setLoggedInUser(true);
+        history.replace(from);
+      })
+      .catch((error) => {
+        setUser({ ...user, error: error });
+      });
+  };
   const inputStyle = {
     border: "0",
     borderBottom: "2px solid #dddddd",
@@ -106,6 +129,7 @@ const Login = () => {
         </button>
         <br />
         <button
+          onClick={handelGoogleSignIn}
           style={{
             width: "540px",
             position: "relative",

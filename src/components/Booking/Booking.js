@@ -27,7 +27,7 @@ const Booking = () => {
   };
   return (
     <div style={backgroundStyle}>
-      <Header />
+      <Header color="white" />
       <Container style={{ marginTop: "100px" }}>
         <Row>
           <Col md={6}>

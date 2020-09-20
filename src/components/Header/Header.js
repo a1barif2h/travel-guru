@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Col,
@@ -10,11 +10,21 @@ import {
   NavDropdown,
   Row,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { LocalContext } from "../../App";
 import logo from "../../images/Logo.png";
 import "./Header.css";
 
 const Header = (props) => {
   const linkColor = props.color;
+  const [
+    showPlace,
+    setShowPlace,
+    loggedInUser,
+    setLoggedInUser,
+    userDetails,
+    setuserDetails,
+  ] = useContext(LocalContext);
   return (
     <Container fluid>
       <Row>
@@ -56,7 +66,7 @@ const Header = (props) => {
                   Destination
                 </Nav.Link>
                 <Nav.Link
-                  style={{ color: `${linkColor}`, fontWeight: "bold" }}
+                  style={{ color: `${linkColor}` }}
                   className=" mr-5"
                   href="/blog"
                 >
@@ -70,9 +80,21 @@ const Header = (props) => {
                   Contact
                 </Nav.Link>
               </Nav>
-              <Button className="login-button ml-sm-3" variant="warning">
-                Login
-              </Button>
+              {loggedInUser ? (
+                <Nav.Link
+                  style={{ color: `${linkColor}`, fontWeight: "bold" }}
+                  className=" mr-5"
+                  href="/profile"
+                >
+                  Welcome: {userDetails.name}
+                </Nav.Link>
+              ) : (
+                <Link to="/login">
+                  <Button className="login-button ml-sm-3" variant="warning">
+                    Login
+                  </Button>
+                </Link>
+              )}
             </Navbar.Collapse>
           </Navbar>
         </Col>

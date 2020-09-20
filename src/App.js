@@ -24,7 +24,12 @@ function App() {
   });
 
   const [loggedInUser, setLoggedInUser] = useState(false);
-  const [name, setName] = useState("user");
+  const [userDetails, setUserDetails] = useState({
+    isSignedIn: false,
+    name: "",
+    email: "",
+    photo: "",
+  });
   return (
     <LocalContext.Provider
       value={[
@@ -32,8 +37,8 @@ function App() {
         setShowPlace,
         loggedInUser,
         setLoggedInUser,
-        name,
-        setName,
+        userDetails,
+        setUserDetails,
       ]}
     >
       <Router>
