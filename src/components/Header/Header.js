@@ -81,13 +81,19 @@ const Header = (props) => {
                 </Nav.Link>
               </Nav>
               {loggedInUser ? (
-                <Nav.Link
-                  style={{ color: `${linkColor}`, fontWeight: "bold" }}
-                  className=" mr-5"
-                  href="/profile"
-                >
-                  Welcome: {userDetails.name}
-                </Nav.Link>
+                <Container>
+                  <Row>
+                    <Col>
+                      <Nav.Link
+                        style={{ color: `${linkColor}`, fontWeight: "bold" }}
+                        className=" mr-5"
+                        href="/profile"
+                      >
+                        Welcome: {userDetails.name}
+                      </Nav.Link>
+                    </Col>
+                  </Row>
+                </Container>
               ) : (
                 <Link to="/login">
                   <Button className="login-button ml-sm-3" variant="warning">
