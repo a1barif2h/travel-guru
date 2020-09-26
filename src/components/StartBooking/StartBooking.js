@@ -10,6 +10,14 @@ const StartBooking = () => {
   return (
     <div>
       <Header color="black" img={blackLogo} />
+      <hr
+        style={{
+          border: "0",
+          borderBottom: "1px solid #dddddd",
+          marginTop: "-4px",
+          width: "85%",
+        }}
+      />
       <Container>
         <Row>
           <Col md={6}>
