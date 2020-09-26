@@ -24,12 +24,7 @@ function App() {
   });
 
   const [loggedInUser, setLoggedInUser] = useState(false);
-  const [userDetails, setUserDetails] = useState({
-    isSignedIn: false,
-    name: "",
-    email: "",
-    photo: "",
-  });
+  const [userDetails, setUserDetails] = useState("user");
   return (
     <LocalContext.Provider
       value={[

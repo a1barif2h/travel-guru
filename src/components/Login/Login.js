@@ -2,13 +2,12 @@ import React, { useContext, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import blackLogo from "../../images/BlackLogo.png";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import { LocalContext } from "../../App";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import fbIcon from "../../images/fb.png";
 import googleIcon from "../../images/google.png";
-import { firebaseConfig } from "../../firbase.config";
 
 const Login = () => {
   const [
@@ -22,19 +21,16 @@ const Login = () => {
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [user, setUser] = useState({});
   const [confirmationError, setConfirmationError] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [submitUser, setSubmitUser] = useState("");
-  const [verified, setVerified] = useState(true);
+  const [verified, setVerified] = useState("null");
+  const [verifyMessage, setVerifyMessage] = useState(false);
 
-  const handelForm = (e) => {
-    e.preventDefault();
-    console.log("btn clicked");
-    //Email Signup
+  const handelSubmit = (event) => {
+    event.preventDefault();
+    //Signup with email and password
     if (submitUser === "signup") {
       user.password == user.confirmationPassword
         ? firebase
@@ -44,13 +40,11 @@ const Login = () => {
               setConfirmationError(false);
               setUser({ ...user, signupError: "" });
               setIsSignUp(true);
-              console.log(user);
-
+              setVerifyMessage(true);
               const currentUser = firebase.auth().currentUser;
               currentUser.updateProfile({
                 displayName: `${user.fname} ${user.lname}`,
               });
-
               currentUser.sendEmailVerification();
             })
             .catch((err) => {
@@ -58,45 +52,38 @@ const Login = () => {
             })
         : setConfirmationError(true);
     }
-
-    // Email Sign in
-    const signedUpUser = firebase.auth().currentUser;
-    submitUser === "signin" && signedUpUser?.emailVerified
-      ? firebase
-          .auth()
-          .signInWithEmailAndPassword(user.email, user.password)
-          .then((res) => {
-            const { displayName, email, photoUrl } = res.user;
-            const signedInUser = {
-              isSignedIn: true,
-              name: displayName,
-              email: email,
-              photo: photoUrl,
-            };
-            setUserDetails(signedInUser);
+    // Sign in with email and password
+    if (submitUser == "signin") {
+      setVerifyMessage(false);
+      setUser({ ...user, signinError: "" });
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          const currentUser = firebase.auth().currentUser;
+          setUserDetails(currentUser.displayName);
+          if (currentUser.emailVerified) {
             setLoggedInUser(true);
             history.replace(from);
-          })
-          .catch((err) => {
-            setUser({ ...user, signinError: err.message });
-          })
-      : setVerified(false);
+          } else {
+            currentUser.sendEmailVerification();
+            setVerified("false");
+          }
+        })
+        .catch((err) => {
+          setUser({ ...user, signinError: err.message });
+        });
+    }
   };
-
+  //Handel google sign in
   const handelGoogleSignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
       .then((res) => {
-        const { displayName, email, photoUrl } = res.user;
-        const signedInUser = {
-          isSignedIn: true,
-          name: displayName,
-          email: email,
-          photo: photoUrl,
-        };
-        setUserDetails(signedInUser);
+        const currentUser = firebase.auth().currentUser;
+        setUserDetails(currentUser.displayName);
         setLoggedInUser(true);
         history.replace(from);
       })
@@ -104,23 +91,15 @@ const Login = () => {
         setUser({ ...user, error: error.massage });
       });
   };
-  const handelSignOut = () => {
-    console.log("sign out clicked");
-  };
+  //Facebook sign in
   const handelFbSignIn = () => {
     const provider = new firebase.auth.FacebookAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
       .then((res) => {
-        const { displayName, email, photoUrl } = res.user;
-        const signedInUser = {
-          isSignedIn: true,
-          name: displayName,
-          email: email,
-          photo: photoUrl,
-        };
-        setUserDetails(signedInUser);
+        const currentUser = firebase.auth().currentUser;
+        setUserDetails(currentUser.displayName);
         setLoggedInUser(true);
         history.replace(from);
       })
@@ -128,9 +107,11 @@ const Login = () => {
         setUser({ ...user, error: error.massage });
       });
   };
+  //Set send verification email
   const sendVerification = (email) => {
     firebase.auth().sendPasswordResetEmail(email);
   };
+  //Toggle signup and login
   const handelSignUpToggle = () => {
     setIsSignUp(false);
     setUser({ ...user, signinError: "" });
@@ -148,7 +129,7 @@ const Login = () => {
     <div>
       <Header color="black" img={blackLogo} />
       <Form
-        onSubmit={handelForm}
+        onSubmit={handelSubmit}
         style={{
           width: "570px",
           margin: "20px auto",
@@ -156,20 +137,42 @@ const Login = () => {
           padding: "15px",
         }}
       >
+        {verifyMessage && (
+          <h5
+            style={{
+              textAlign: "center",
+              width: "300px",
+              margin: "auto",
+              borderRadius: "25px",
+              background: "#70C989",
+              padding: "5px",
+              color: "white",
+            }}
+          >
+            Verification mail sent!
+          </h5>
+        )}
         {isSignUp ? <h2>Login</h2> : <h2>Create an account</h2>}
         {!isSignUp && (
           <>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
               <Form.Control
+                onBlur={(event) =>
+                  setUser({ ...user, fname: event.target.value })
+                }
+                name="firstName"
                 required
                 style={inputStyle}
                 type="text"
                 placeholder="First Name"
               />
             </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group>
               <Form.Control
+                onBlur={(event) =>
+                  setUser({ ...user, lname: event.target.value })
+                }
+                name="lastName"
                 required
                 style={inputStyle}
                 type="text"
@@ -179,8 +182,10 @@ const Login = () => {
           </>
         )}
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group controlId="formBasicEmail">
           <Form.Control
+            onBlur={(event) => setUser({ ...user, email: event.target.value })}
+            name="email"
             required
             style={inputStyle}
             type="email"
@@ -189,6 +194,10 @@ const Login = () => {
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Control
+            onBlur={(event) =>
+              setUser({ ...user, password: event.target.value })
+            }
+            name="password"
             required
             style={inputStyle}
             type="password"
@@ -198,6 +207,10 @@ const Login = () => {
         {!isSignUp && (
           <Form.Group controlId="formBasicPassword">
             <Form.Control
+              onBlur={(event) =>
+                setUser({ ...user, confirmationPassword: event.target.value })
+              }
+              name="confirmationPassword"
               required
               style={inputStyle}
               type="password"

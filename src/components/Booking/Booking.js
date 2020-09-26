@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { LocalContext } from "../../App";
 import Header from "../Header/Header";
-import "./Booking.css";
 
 const Booking = () => {
   const history = useHistory();
@@ -48,6 +47,7 @@ const Booking = () => {
                   Origin
                 </Form.Label>
                 <Form.Control
+                  required
                   style={{
                     color: "black",
                     fontWeight: "600",
@@ -64,6 +64,7 @@ const Booking = () => {
                   Destination
                 </Form.Label>
                 <Form.Control
+                  required
                   style={{
                     color: "black",
                     fontWeight: "600",
@@ -83,6 +84,7 @@ const Booking = () => {
                     </Form.Label>
                   </p>
                   <ReactDatePicker
+                    required
                     style={{
                       position: "relative",
                     }}
@@ -115,6 +117,7 @@ const Booking = () => {
                     </Form.Label>
                   </p>
                   <ReactDatePicker
+                    required
                     style={{
                       position: "relative",
                     }}

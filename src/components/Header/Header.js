@@ -7,7 +7,6 @@ import {
   FormControl,
   Nav,
   Navbar,
-  NavDropdown,
   Row,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -89,7 +88,7 @@ const Header = (props) => {
                         className=" mr-5"
                         href="/profile"
                       >
-                        Welcome: {userDetails.name}
+                        Welcome: {userDetails}
                       </Nav.Link>
                     </Col>
                   </Row>
